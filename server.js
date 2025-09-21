@@ -19,7 +19,8 @@ import accountsRoutes from './routes/accounts.js';
 import transactionsRoutes from './routes/transactions.js';
 import adminRoutes from './routes/admin.js';
 import stripeRoutes from './routes/stripe.js';
-import usersRoutes from './routes/users.js'; // For transferFunds, transaction history
+import usersRoutes from './routes/users.js'; // Protected routes
+import { enrollUser } from './controllers/users/userController.js'; // Public enrollment
 
 // ------------------------
 // Import Controllers
@@ -41,7 +42,6 @@ const app = express();
 // Security & Performance
 // ------------------------
 app.use(helmet());
-
 app.use(cors({
   origin: ENV.NEXT_PUBLIC_SITE_URL || '*',
   credentials: true
@@ -82,7 +82,14 @@ app.use('/api/accounts', verifyToken, accountsRoutes);
 app.use('/api/transactions', verifyToken, transactionsRoutes);
 app.use('/api/admin', verifyToken, adminRoutes);
 app.use('/api/stripe', verifyToken, stripeRoutes); // All Stripe endpoints except webhook
-app.use('/api/users', verifyToken, usersRoutes);   // Users & account operations
+
+// ------------------------
+// Users Routes
+// ------------------------
+// Public enrollment route
+app.post('/api/users/enroll', enrollUser);
+// Protected user routes (transfer, transaction history, etc.)
+app.use('/api/users', verifyToken, usersRoutes);
 
 // ------------------------
 // Stripe Webhook (must use raw body)
