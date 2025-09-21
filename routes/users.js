@@ -1,17 +1,17 @@
 // routes/users.js
 import express from 'express';
+import { enrollUser } from '../controllers/userController.js';
 import { transferFunds, getTransactionHistory } from '../controllers/users/accounts.js';
-import { enrollUser } from '../controllers/users/userController.js'; // import your new controller
+import { verifyToken } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// Public route: enroll a new user
+// --- Public route ---
+// POST /api/users/enroll → enroll new user
 router.post('/enroll', enrollUser);
 
-// POST /api/users/transfer → transfer funds
-router.post('/transfer', transferFunds);
-
-// GET /api/users/:accountId/transactions → get transaction history
-router.get('/:accountId/transactions', getTransactionHistory);
+// --- Protected routes (require authentication) ---
+router.post('/transfer', verifyToken, transferFunds);
+router.get('/:accountId/transactions', verifyToken, getTransactionHistory);
 
 export default router;
