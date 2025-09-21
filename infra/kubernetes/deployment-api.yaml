@@ -1,0 +1,21 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: placeholder-api
+  namespace: placeholder-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: placeholder-api
+  template:
+    metadata:
+      labels:
+        app: placeholder-api
+    spec:
+      containers:
+        - name: placeholder-api-container
+          image: nginx:latest
+          ports:
+            - containerPort: 80

@@ -1,0 +1,21 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: placeholder-db
+  namespace: placeholder-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: placeholder-db
+  template:
+    metadata:
+      labels:
+        app: placeholder-db
+    spec:
+      containers:
+        - name: placeholder-db-container
+          image: postgres:latest
+          ports:
+            - containerPort: 5432

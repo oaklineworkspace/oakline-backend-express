@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: placeholder-ingress
+  namespace: placeholder-namespace
+spec:
+  rules:
+    - host: placeholder.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: placeholder-app-service
+                port:
+                  number: 80
