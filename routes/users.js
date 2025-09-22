@@ -1,14 +1,13 @@
-// routes/users.js
 import express from 'express';
-import { enrollUser } from '../controllers/users/userController.js';
+import { enrollUser, verifyIdentity } from '../controllers/users/userController.js';
 import { transferFunds, getTransactionHistory } from '../controllers/users/accounts.js';
 import { verifyToken } from '../lib/middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// --- Public route ---
-// POST /api/users/enroll → enroll new user
-router.post('/enroll', enrollUser);
+// --- Public routes ---
+router.post('/verify-identity', verifyIdentity); // new: verify DOB + SSN
+router.post('/enroll', enrollUser);              // enroll after verification
 
 // --- Protected routes (require authentication) ---
 router.post('/transfer', verifyToken, transferFunds);
