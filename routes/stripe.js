@@ -1,6 +1,6 @@
 import express from 'express';
-import { createPaymentIntent } from '../controllers/stripeController.js';
-import { verifyToken } from '../middleware/authMiddleware.js';
+import { createPaymentIntent } from '../controllers/stripe/stripeController.js';
+import { verifyToken } from '../lib/middleware/authMiddleware.js';
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import { verifyToken } from '../middleware/authMiddleware.js';
+import { verifyToken } from '../lib/middleware/authMiddleware.js';
 import { getUserCards, updateCard, createCard } from '../controllers/cards/cardsController.js';
 import { getCardTransactions, processCardTransaction } from '../controllers/cards/cardTransactionsController.js';
 

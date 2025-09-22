@@ -1,6 +1,6 @@
 // controllers/userController.js
-import { supabase } from '../lib/supabaseClient.js';
-import bcrypt from 'bcrypt';
+import { supabase } from '../../lib/supabaseClient.js';
+import bcrypt from 'bcryptjs';
 
 export const enrollUser = async (req, res) => {
   try {

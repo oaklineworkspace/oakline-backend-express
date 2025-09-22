@@ -6,7 +6,24 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser'; // Needed for Stripe webhook
+
+// Load environment variables first
 dotenv.config();
+
+// Validate critical environment variables
+const requiredEnvVars = [
+  'SUPABASE_SERVICE_KEY',
+  'NEXT_PUBLIC_SUPABASE_URL'
+];
+
+const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+if (missingVars.length > 0) {
+  console.error('❌ Missing required environment variables:', missingVars.join(', '));
+  console.error('Please make sure these are set in your Secrets tab');
+  process.exit(1);
+}
+
+console.log('✅ Environment variables loaded successfully');
 
 import { ENV } from './config/env.js';
 
@@ -16,7 +33,6 @@ import { ENV } from './config/env.js';
 import authRoutes from './routes/auth.js';
 import cardsRoutes from './routes/cards.js';
 import accountsRoutes from './routes/accounts.js';
-import transactionsRoutes from './routes/transactions.js';
 import adminRoutes from './routes/admin.js';
 import stripeRoutes from './routes/stripe.js';
 import usersRoutes from './routes/users.js'; // Protected routes
@@ -25,13 +41,13 @@ import { enrollUser } from './controllers/users/userController.js'; // Public en
 // ------------------------
 // Import Controllers
 // ------------------------
-import { handleStripeWebhook } from './controllers/stripe/stripeWebhookController.js';
+import { stripeWebhook } from './controllers/stripe/stripeWebhookController.js';
 
 // ------------------------
 // Import Middleware
 // ------------------------
-import { errorHandler } from './middleware/errorHandler.js';
-import { verifyToken } from './middleware/authMiddleware.js';
+import { secureErrorHandler as errorHandler } from './lib/middleware/errorHandler.js';
+import { verifyToken } from './lib/middleware/authMiddleware.js';
 
 // ------------------------
 // Initialize App
@@ -79,7 +95,6 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/cards', verifyToken, cardsRoutes);
 app.use('/api/accounts', verifyToken, accountsRoutes);
-app.use('/api/transactions', verifyToken, transactionsRoutes);
 app.use('/api/admin', verifyToken, adminRoutes);
 app.use('/api/stripe', verifyToken, stripeRoutes); // All Stripe endpoints except webhook
 
@@ -97,7 +112,7 @@ app.use('/api/users', verifyToken, usersRoutes);
 app.post(
   '/api/stripe/webhook',
   bodyParser.raw({ type: 'application/json' }),
-  handleStripeWebhook
+  stripeWebhook
 );
 
 // ------------------------
@@ -116,8 +131,8 @@ app.use(errorHandler);
 // Start Server
 // ------------------------
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🟢 Oakline Backend running on port ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🟢 Oakline Backend running on 0.0.0.0:${PORT}`);
 });
 
 export default app;

@@ -1,8 +1,8 @@
 // routes/users.js
 import express from 'express';
-import { enrollUser } from '../controllers/userController.js';
+import { enrollUser } from '../controllers/users/userController.js';
 import { transferFunds, getTransactionHistory } from '../controllers/users/accounts.js';
-import { verifyToken } from '../middleware/authMiddleware.js';
+import { verifyToken } from '../lib/middleware/authMiddleware.js';
 
 const router = express.Router();
 

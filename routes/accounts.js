@@ -1,6 +1,6 @@
 // routes/accounts.js
 import express from 'express';
-import { verifyToken } from '../middleware/authMiddleware.js';
+import { verifyToken } from '../lib/middleware/authMiddleware.js';
 
 // Controllers
 import { getAccountTypes } from '../controllers/accounts/accountTypes.js';
