@@ -1,5 +1,5 @@
 // controllers/users/userController.js
-import { supabaseAdmin } from '../../lib/supabaseClient.js';
+import { supabaseAdmin } from '../../lib/supabaseAdmin.js';
 import bcrypt from 'bcryptjs';
 
 // ------------------------
@@ -11,10 +11,6 @@ export const verifyIdentity = async (req, res) => {
 
     if (!dob || !ssnLast4) {
       return res.status(400).json({ error: 'Missing required fields' });
-    }
-
-    if (!supabaseAdmin) {
-      return res.status(500).json({ error: 'Server misconfiguration: Supabase admin client not available' });
     }
 
     const { data: user, error } = await supabaseAdmin
@@ -47,10 +43,6 @@ export const enrollUser = async (req, res) => {
 
     if (!email || !password || !full_name) {
       return res.status(400).json({ error: 'Missing required fields' });
-    }
-
-    if (!supabaseAdmin) {
-      return res.status(500).json({ error: 'Server misconfiguration: Supabase admin client not available' });
     }
 
     // Check if user already exists
