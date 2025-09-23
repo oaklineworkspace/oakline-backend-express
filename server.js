@@ -35,8 +35,7 @@ import cardsRoutes from './routes/cards.js';
 import accountsRoutes from './routes/accounts.js';
 import adminRoutes from './routes/admin.js';
 import stripeRoutes from './routes/stripe.js';
-import usersRoutes from './routes/users.js'; // Protected routes
-import { enrollUser } from './controllers/users/userController.js'; // Public enrollment
+import usersRoutes from './routes/users.js';
 
 // ------------------------
 // Import Controllers
@@ -99,12 +98,9 @@ app.use('/api/admin', verifyToken, adminRoutes);
 app.use('/api/stripe', verifyToken, stripeRoutes); // All Stripe endpoints except webhook
 
 // ------------------------
-// Users Routes
+// Users Routes (public + protected handled in router)
 // ------------------------
-// Public enrollment route
-app.post('/api/users/enroll', enrollUser);
-// Protected user routes (transfer, transaction history, etc.)
-app.use('/api/users', verifyToken, usersRoutes);
+app.use('/api/users', usersRoutes);
 
 // ------------------------
 // Stripe Webhook (must use raw body)
