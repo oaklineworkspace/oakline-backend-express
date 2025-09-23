@@ -57,10 +57,27 @@ const app = express();
 // Security & Performance
 // ------------------------
 app.use(helmet());
-app.use(cors({
-  origin: process.env.NEXT_PUBLIC_SITE_URL || '*',
+
+// ✅ Multi-domain CORS setup
+const allowedOrigins = [
+  "https://theoaklinebank.com",
+  "https://www.theoaklinebank.com",
+  "https://oakline-frontend.vercel.app",
+  "http://localhost:3000" // local frontend
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
-}));
+};
+
+app.use(cors(corsOptions));
 
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
