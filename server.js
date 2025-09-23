@@ -7,28 +7,28 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser'; // Needed for Stripe webhook
 
-// Load environment variables first
+// Load environment variables
 dotenv.config();
 
+// ------------------------
 // Validate critical environment variables
+// ------------------------
 const requiredEnvVars = [
   'SUPABASE_SERVICE_KEY',
-  'NEXT_PUBLIC_SUPABASE_URL'
+  'NEXT_PUBLIC_SUPABASE_URL',
+  'NEXT_PUBLIC_SITE_URL'
 ];
 
-const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+const missingVars = requiredEnvVars.filter((v) => !process.env[v]);
 if (missingVars.length > 0) {
   console.error('❌ Missing required environment variables:', missingVars.join(', '));
-  console.error('Please make sure these are set in your Secrets tab');
   process.exit(1);
 }
 
-console.log('✅ Environment variables loaded successfully');
-
-import { ENV } from './config/env.js';
+console.log('✅ Environment variables loaded');
 
 // ------------------------
-// Import Routes
+// Import routes
 // ------------------------
 import authRoutes from './routes/auth.js';
 import cardsRoutes from './routes/cards.js';
@@ -38,18 +38,18 @@ import stripeRoutes from './routes/stripe.js';
 import usersRoutes from './routes/users.js';
 
 // ------------------------
-// Import Controllers
+// Import controllers
 // ------------------------
 import { stripeWebhook } from './controllers/stripe/stripeWebhookController.js';
 
 // ------------------------
-// Import Middleware
+// Import middleware
 // ------------------------
 import { secureErrorHandler as errorHandler } from './lib/middleware/errorHandler.js';
 import { verifyToken } from './lib/middleware/authMiddleware.js';
 
 // ------------------------
-// Initialize App
+// Initialize app
 // ------------------------
 const app = express();
 
@@ -58,7 +58,7 @@ const app = express();
 // ------------------------
 app.use(helmet());
 app.use(cors({
-  origin: ENV.NEXT_PUBLIC_SITE_URL || '*',
+  origin: process.env.NEXT_PUBLIC_SITE_URL || '*',
   credentials: true
 }));
 
@@ -78,7 +78,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ------------------------
-// Health Check
+// Health check
 // ------------------------
 app.get('/health', (req, res) => {
   res.json({
@@ -89,21 +89,23 @@ app.get('/health', (req, res) => {
 });
 
 // ------------------------
-// API Routes
+// API routes
 // ------------------------
 app.use('/api/auth', authRoutes);
 app.use('/api/cards', verifyToken, cardsRoutes);
 app.use('/api/accounts', verifyToken, accountsRoutes);
 app.use('/api/admin', verifyToken, adminRoutes);
-app.use('/api/stripe', verifyToken, stripeRoutes); // All Stripe endpoints except webhook
+app.use('/api/stripe', verifyToken, stripeRoutes);
 
 // ------------------------
-// Users Routes (public + protected handled in router)
+// Users routes
 // ------------------------
+// Public: verify identity + enroll
+// Protected: transfer & transaction history
 app.use('/api/users', usersRoutes);
 
 // ------------------------
-// Stripe Webhook (must use raw body)
+// Stripe webhook (raw body required)
 // ------------------------
 app.post(
   '/api/stripe/webhook',
@@ -112,19 +114,19 @@ app.post(
 );
 
 // ------------------------
-// 404 Not Found Handler
+// 404 handler
 // ------------------------
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.status(404).json({ error: 'Endpoint not found' });
 });
 
 // ------------------------
-// Global Error Handler
+// Global error handler
 // ------------------------
 app.use(errorHandler);
 
 // ------------------------
-// Start Server
+// Start server
 // ------------------------
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
