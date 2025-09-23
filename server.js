@@ -63,7 +63,8 @@ const allowedOrigins = [
   "https://theoaklinebank.com",
   "https://www.theoaklinebank.com",
   "https://oakline-frontend.vercel.app",
-  "http://localhost:3000" // local frontend
+  "http://localhost:3000",
+  "https://c83f882a-0f33-4f89-8bba-803252644277-00-1rs8o8lvxz5o3.spock.replit.dev" // Replit frontend
 ];
 
 const corsOptions = {
