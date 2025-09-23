@@ -1,7 +1,10 @@
-import { supabase } from '../../lib/supabaseClient.js';
+// controllers/users/userController.js
+import { supabaseAdmin } from '../../lib/supabaseClient.js';
 import bcrypt from 'bcryptjs';
 
-// --- Verify DOB + Last 4 SSN ---
+// ------------------------
+// Verify user identity (DOB + last 4 SSN)
+// ------------------------
 export const verifyIdentity = async (req, res) => {
   try {
     const { dob, ssnLast4 } = req.body;
@@ -10,74 +13,72 @@ export const verifyIdentity = async (req, res) => {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    const { data: application, error } = await supabase
-      .from('applications')
-      .select('first_name, middle_name, last_name, email, date_of_birth, ssn')
-      .eq('date_of_birth', dob)
-      .like('ssn', `%${ssnLast4}`)
-      .single();
-
-    if (error || !application) {
-      return res.status(404).json({ error: 'No matching user found' });
+    if (!supabaseAdmin) {
+      return res.status(500).json({ error: 'Server misconfiguration: Supabase admin client not available' });
     }
 
-    const full_name = [application.first_name, application.middle_name, application.last_name]
-      .filter(Boolean)
-      .join(' ');
+    const { data: user, error } = await supabaseAdmin
+      .from('users')
+      .select('id, email, first_name, middle_name, last_name')
+      .eq('dob', dob)
+      .eq('ssn_last4', ssnLast4)
+      .single();
 
-    res.status(200).json({
-      message: 'Identity verified',
-      user: { full_name, email: application.email }
-    });
+    if (error) {
+      if (error.code === 'PGRST116') { // Not found
+        return res.status(404).json({ error: 'No matching user found' });
+      }
+      throw error;
+    }
 
+    res.status(200).json({ user });
   } catch (err) {
     console.error('Verify Identity error:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-// --- Enroll User ---
+// ------------------------
+// Enroll user after verification
+// ------------------------
 export const enrollUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, full_name } = req.body;
 
-    if (!email || !password) {
+    if (!email || !password || !full_name) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
+    if (!supabaseAdmin) {
+      return res.status(500).json({ error: 'Server misconfiguration: Supabase admin client not available' });
+    }
+
     // Check if user already exists
-    const { data: existingUser } = await supabase
+    const { data: existingUser, error: checkError } = await supabaseAdmin
       .from('users')
       .select('id')
       .eq('email', email)
       .single();
 
+    if (checkError && checkError.code !== 'PGRST116') throw checkError;
     if (existingUser) {
       return res.status(400).json({ error: 'User already exists' });
     }
 
-    // Fetch full name from applications
-    const { data: application, error: appError } = await supabase
-      .from('applications')
-      .select('first_name, middle_name, last_name')
-      .eq('email', email)
-      .single();
-
-    if (appError || !application) {
-      return res.status(404).json({ error: 'No application found for this email' });
-    }
-
-    const full_name = [application.first_name, application.middle_name, application.last_name]
-      .filter(Boolean)
-      .join(' ');
-
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert into Supabase users table
-    const { data, error } = await supabase
+    // Insert user
+    const { data, error } = await supabaseAdmin
       .from('users')
-      .insert([{ email, password: hashedPassword, full_name, created_at: new Date() }])
+      .insert([
+        {
+          email,
+          password: hashedPassword,
+          full_name,
+          created_at: new Date()
+        }
+      ])
       .select()
       .single();
 
@@ -85,9 +86,8 @@ export const enrollUser = async (req, res) => {
 
     res.status(201).json({
       message: 'User enrolled successfully',
-      user: { id: data.id, email: data.email, full_name: data.full_name },
+      user: { id: data.id, email: data.email, full_name: data.full_name }
     });
-
   } catch (err) {
     console.error('Enroll error:', err);
     res.status(500).json({ error: 'Internal server error' });
