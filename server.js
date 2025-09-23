@@ -40,8 +40,7 @@ import cardsRoutes from './routes/cards.js';
 import accountsRoutes from './routes/accounts.js';
 import adminRoutes from './routes/admin.js';
 import stripeRoutes from './routes/stripe.js';
-import usersRoutes from './routes/users.js';
-
+import usersRoutes from './routes/users.js'; // <-- handles enrollment too
 
 // ------------------------
 // Import controllers
@@ -120,12 +119,11 @@ app.use('/api/cards', verifyToken, cardsRoutes);
 app.use('/api/accounts', verifyToken, accountsRoutes);
 app.use('/api/admin', verifyToken, adminRoutes);
 app.use('/api/stripe', verifyToken, stripeRoutes);
-app.use('/api/users', usersRoutes);
 
 // ------------------------
-// Enrollment routes
+// Users routes (includes enrollment)
 // ------------------------
-app.use('/api/enroll', enrollRoutes);
+app.use('/api/users', usersRoutes); 
 
 // ------------------------
 // Stripe webhook (raw body required)
