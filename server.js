@@ -41,7 +41,7 @@ import accountsRoutes from './routes/accounts.js';
 import adminRoutes from './routes/admin.js';
 import stripeRoutes from './routes/stripe.js';
 import usersRoutes from './routes/users.js';
-import enrollRoutes from './routes/enroll.js'; // NEW
+
 
 // ------------------------
 // Import controllers
