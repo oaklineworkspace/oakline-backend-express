@@ -16,7 +16,12 @@ dotenv.config();
 const requiredEnvVars = [
   'SUPABASE_SERVICE_KEY',
   'NEXT_PUBLIC_SUPABASE_URL',
-  'NEXT_PUBLIC_SITE_URL'
+  'NEXT_PUBLIC_SITE_URL',
+  'SMTP_HOST',
+  'SMTP_PORT',
+  'SMTP_USER',
+  'SMTP_PASS',
+  'SMTP_FROM'
 ];
 
 const missingVars = requiredEnvVars.filter((v) => !process.env[v]);
@@ -36,6 +41,7 @@ import accountsRoutes from './routes/accounts.js';
 import adminRoutes from './routes/admin.js';
 import stripeRoutes from './routes/stripe.js';
 import usersRoutes from './routes/users.js';
+import enrollRoutes from './routes/enroll.js'; // NEW
 
 // ------------------------
 // Import controllers
@@ -114,13 +120,12 @@ app.use('/api/cards', verifyToken, cardsRoutes);
 app.use('/api/accounts', verifyToken, accountsRoutes);
 app.use('/api/admin', verifyToken, adminRoutes);
 app.use('/api/stripe', verifyToken, stripeRoutes);
+app.use('/api/users', usersRoutes);
 
 // ------------------------
-// Users routes
+// Enrollment routes
 // ------------------------
-// Public: verify identity + enroll
-// Protected: transfer & transaction history
-app.use('/api/users', usersRoutes);
+app.use('/api/enroll', enrollRoutes);
 
 // ------------------------
 // Stripe webhook (raw body required)
