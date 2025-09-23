@@ -1,5 +1,5 @@
 import express from 'express';
-import { requestEnrollment, completeEnrollment } from '../controllers/users/userController.js';
+import { requestEnrollment, completeEnrollment } from '../controllers/users/enrollController.js';
 
 const router = express.Router();
 
