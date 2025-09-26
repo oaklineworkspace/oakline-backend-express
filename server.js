@@ -42,7 +42,7 @@ import adminRoutes from './routes/admin.js';
 import stripeRoutes from './routes/stripe.js';
 import usersRoutes from './routes/users.js'; 
 import applicationsRoutes from './routes/applications.js'; // <-- NEW
-
+import optionsRoutes from './routes/options.js';
 // ------------------------
 // Import controllers
 // ------------------------
@@ -123,6 +123,7 @@ app.use('/api/admin', verifyToken, adminRoutes);
 app.use('/api/stripe', verifyToken, stripeRoutes);
 app.use('/api/applications', applicationsRoutes); // <-- added route
 app.use('/api/users', usersRoutes); 
+app.use('/api/options', optionsRoutes);
 
 // ------------------------
 // Stripe webhook (raw body required)
