@@ -1,8 +1,9 @@
-const express = require('express');
-const router = express.Router();
+// /routes/options.js
+import express from 'express';
+import ACCOUNT_TYPES from '../data/accountTypes.js';
+import COUNTRIES from '../data/countries.js';
 
-const ACCOUNT_TYPES = require('../data/accountTypes');
-const COUNTRIES = require('../data/countries');
+const router = express.Router();
 
 // GET /api/options/account-types
 router.get('/account-types', (req, res) => {
@@ -14,4 +15,4 @@ router.get('/countries', (req, res) => {
   res.json({ success: true, countries: COUNTRIES });
 });
 
-module.exports = router;
+export default router;
