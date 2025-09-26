@@ -1,0 +1,27 @@
+const ACCOUNT_TYPES = [
+  { id: 1, name: 'Checking Account', description: 'Everyday banking made simple with no hidden fees.', icon: '💳', rate: '0.01% APY' },
+  { id: 2, name: 'Savings Account', description: 'Grow your savings securely with competitive interest rates.', icon: '💰', rate: '4.50% APY' },
+  { id: 3, name: 'Business Checking', description: 'Streamlined banking solutions tailored for business operations.', icon: '🏢', rate: '0.01% APY' },
+  { id: 4, name: 'Business Savings', description: 'Maximize business funds with higher-yield savings options.', icon: '🏦', rate: '4.25% APY' },
+  { id: 5, name: 'Student Checking', description: 'No-fee checking designed specifically for students and young adults.', icon: '🎓', rate: '0.01% APY' },
+  { id: 6, name: 'Money Market Account', description: 'Premium savings account offering higher interest and flexible access.', icon: '📈', rate: '4.75% APY' },
+  { id: 7, name: 'Certificate of Deposit (CD)', description: 'Lock in your funds for a fixed term with guaranteed returns.', icon: '🔒', rate: '5.25% APY' },
+  { id: 8, name: 'Retirement Account (IRA)', description: 'Plan and grow your retirement funds with tax advantages.', icon: '🏖️', rate: '4.80% APY' },
+  { id: 9, name: 'Joint Checking Account', description: 'Shared checking account perfect for couples or partners.', icon: '👫', rate: '0.01% APY' },
+  { id: 10, name: 'Trust Account', description: 'Safely manage assets for beneficiaries with professional oversight.', icon: '🛡️', rate: '3.50% APY' },
+  { id: 11, name: 'Investment Brokerage Account', description: 'Access stocks, bonds, ETFs, and more with expert tools.', icon: '📊', rate: 'Variable' },
+  { id: 12, name: 'High-Yield Savings Account', description: 'Maximize your earnings with a high-interest savings account.', icon: '💎', rate: '5.00% APY' },
+  { id: 13, name: 'International Checking', description: 'Seamless banking across borders with multi-currency access.', icon: '🌍', rate: '0.01% APY' },
+  { id: 14, name: 'Foreign Currency Account', description: 'Hold and manage multiple currencies with ease.', icon: '💱', rate: 'Variable' },
+  { id: 15, name: 'Cryptocurrency Wallet', description: 'Securely store and manage your digital assets.', icon: '₿', rate: 'Variable' },
+  { id: 16, name: 'Loan Repayment Account', description: 'Dedicated account to simplify and automate loan payments.', icon: '💳', rate: 'N/A' },
+  { id: 17, name: 'Mortgage Account', description: 'Manage home financing and payments efficiently.', icon: '🏠', rate: 'Variable' },
+  { id: 18, name: 'Auto Loan Account', description: 'Simplified vehicle financing with easy tracking of payments.', icon: '🚗', rate: 'Variable' },
+  { id: 19, name: 'Credit Card Account', description: 'Flexible spending power with reward programs and security.', icon: '💳', rate: 'Variable APR' },
+  { id: 20, name: 'Prepaid Card Account', description: 'Control your spending with a preloaded card solution.', icon: '🎫', rate: 'N/A' },
+  { id: 21, name: 'Payroll Account', description: 'Direct deposit convenience for employees and employers.', icon: '💼', rate: '0.01% APY' },
+  { id: 22, name: 'Nonprofit/Charity Account', description: 'Specialized accounts for nonprofits with favorable terms.', icon: '❤️', rate: '2.50% APY' },
+  { id: 23, name: 'Escrow Account', description: 'Securely hold funds for transactions with transparency.', icon: '🔐', rate: '1.50% APY' },
+];
+
+module.exports = ACCOUNT_TYPES;
