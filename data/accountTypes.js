@@ -24,4 +24,4 @@ const ACCOUNT_TYPES = [
   { id: 23, name: 'Escrow Account', description: 'Securely hold funds for transactions with transparency.', icon: '🔐', rate: '1.50% APY' },
 ];
 
-module.exports = ACCOUNT_TYPES;
+export default ACCOUNT_TYPES;
