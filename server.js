@@ -40,7 +40,8 @@ import cardsRoutes from './routes/cards.js';
 import accountsRoutes from './routes/accounts.js';
 import adminRoutes from './routes/admin.js';
 import stripeRoutes from './routes/stripe.js';
-import usersRoutes from './routes/users.js'; // <-- handles enrollment too
+import usersRoutes from './routes/users.js'; 
+import applicationsRoutes from './routes/applications.js'; // <-- NEW
 
 // ------------------------
 // Import controllers
@@ -120,10 +121,7 @@ app.use('/api/cards', verifyToken, cardsRoutes);
 app.use('/api/accounts', verifyToken, accountsRoutes);
 app.use('/api/admin', verifyToken, adminRoutes);
 app.use('/api/stripe', verifyToken, stripeRoutes);
-
-// ------------------------
-// Users routes (includes enrollment)
-// ------------------------
+app.use('/api/applications', applicationsRoutes); // <-- added route
 app.use('/api/users', usersRoutes); 
 
 // ------------------------
