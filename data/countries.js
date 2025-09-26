@@ -159,4 +159,4 @@ const COUNTRIES = [
   },
 ];
 
-module.exports = COUNTRIES;
+export default COUNTRIES;
