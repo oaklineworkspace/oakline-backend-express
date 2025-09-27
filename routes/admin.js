@@ -1,7 +1,13 @@
 // routes/admin.js
 import express from 'express';
 import { verifyToken } from '../lib/middleware/authMiddleware.js';
-import { supabaseAdmin } from '../supabaseAdmin.js';
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase admin client
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY
+);
 
 // Controllers
 import {
