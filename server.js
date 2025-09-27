@@ -69,6 +69,7 @@ const allowedOrigins = [
   "https://theoaklinebank.com",
   "https://www.theoaklinebank.com",
   "https://oakline-frontend.vercel.app",
+  "https://oakline-admin.vercel.app",       // <-- Admin dashboard added
   "http://localhost:3000",
   "https://94172b37-347f-4336-a50a-3c5d736c8d0b-00-2gs4qw0lqbo8f.kirk.replit.dev",
   "https://c83f882a-0f33-4f89-8bba-803252644277-00-1rs8o8lvxz5o3.spock.replit.dev",
