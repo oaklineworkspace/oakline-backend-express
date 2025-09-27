@@ -73,6 +73,7 @@ const allowedOrigins = [
   "https://94172b37-347f-4336-a50a-3c5d736c8d0b-00-2gs4qw0lqbo8f.kirk.replit.dev",
   "https://c83f882a-0f33-4f89-8bba-803252644277-00-1rs8o8lvxz5o3.spock.replit.dev",
   "https://c3c6a995-3964-4202-92c6-08752dcd1764-00-2ogeelws1sy3x.kirk.replit.dev",
+  "https://1a2b9811-157e-4583-8121-c74ae61e998e-00-1fq9v2n8ddsus.worf.replit.dev",
 ];
 
 const corsOptions = {
